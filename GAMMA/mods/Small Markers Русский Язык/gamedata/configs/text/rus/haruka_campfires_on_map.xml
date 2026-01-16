@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="windows-1251"?>
+
+<string_table>
+    <string id="ui_mcm_menu_campfires_on_map">
+		<text>Campfires On Map</text>
+	</string>
+
+	<string id="ui_mcm_campfires_on_map_show_campfires">
+		<text>Отображать костры</text>
+	</string>
+
+	<string id="ui_mcm_campfires_on_map_show_only_visited">
+		<text>Только посещенные</text>
+	</string>
+	<string id="ui_mcm_campfires_on_map_show_only_visited_desc">
+		<text>Отображает костры, с которыми взаимодействовал игрок.</text>
+	</string>
+
+    <string id="st_campfire">
+		<text>Костер</text>
+	</string>
+    <string id="st_campfire_visited">
+		<text>%c[ui_white]Костер (%c[d_orange]Посещен%c[ui_white])</text>
+	</string>
+</string_table>
