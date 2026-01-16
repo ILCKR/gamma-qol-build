@@ -52,7 +52,7 @@
 
 # Интерфейс
 
-1. [Auto Ammo Favourite](https://disk.yandex.ru/d/tb9XnxYjVZbDvA) Yandex.Disk- Автоматическое добавление обвесов и патронов в избранное под экипированное оружие
+1. Auto Ammo Favourite - Автоматическое добавление обвесов и патронов в избранное под экипированное оружие (в архиве)
 2. [Custom iTheon's PDA Taskboard](https://www.moddb.com/mods/stalker-anomaly/addons/custom-itheons-pda-taskboard) - Другая панель взятия квестов в PDA
 3. [Fragger's Main Menus](https://www.moddb.com/mods/stalker-anomaly/addons/fmm-fraggers-main-menus) - Главное меню
 4. [Hover Drop and Disassemble Hotkey](https://www.moddb.com/mods/stalker-anomaly/addons/drop-and-disassemble-hotkey) - Бинд для разборки предметов без ПКМ
@@ -84,32 +84,28 @@
 5. [Frosty Weapon Pack - EFT 3DSS And PRS Module Full Patch](https://discord.com/channels/912320241713958912/1277740537344168016/1277740537344168016) - Патч для FWP 2/3
 6. [Frosty Weapon Pack - EFT Weapon Pack Full Patch](https://discord.com/channels/912320241713958912/1277740537344168016/1277740537344168016) - Патч для FWP 1/3
 7. [GFY - G.A.M.M.A. Patch](https://discord.com/channels/912320241713958912/1393231304727724153/1393231374768672959) - Дополнительный патч для GFY
-8. [The Anomalous Stash Patch](https://disk.yandex.ru/d/eK0Vr0OQkVnvYw) Yandex.Disk - Патч для аномального рюкзака (вес рюкзака = 1, вместительность = 1000)
-9. [Zone Bin TE Patch](https://disk.yandex.ru/d/AxKG1o_86ZfInQ) Yandex.Disk - Патч совместимости demonized time events для Zone Bin
+8. The Anomalous Stash Patch - Патч для аномального рюкзака (вес рюкзака = 1, вместительность = 1000) (в архиве)
+9. Zone Bin TE Patch - Патч совместимости demonized time events для Zone Bin (в архиве)
 
 # Переводы
 
-1. [Small Markers Русский Язык](https://disk.yandex.ru/d/uSJtiG6DHGZ6iQ) Yandex.Disk
+1. Small Markers Русский Язык (в архиве)
 2. [The Anomalous Stash Русский Язык](https://www.moddb.com/mods/stalker-anomaly/addons/the-anomalous-stash-rus)
 3. [The Collector Русский Язык](https://www.moddb.com/mods/stalker-anomaly/addons/the-collector-rus)
 
 # Отключенные моды
 
 1. [Invictus Protection](https://www.moddb.com/mods/stalker-anomaly/addons/invictus-protect-rc1819) - Защита от потери Непокоренного при заходе в отладке + отключение опций сложности в настройках игры
-2. [New Run Timer](https://disk.yandex.ru/d/8sounV4Q2Qj9vw) Yandex.Disk - Таймер забега
+2. New Run Timer - Таймер забега (в архиве)
 
-# Файлы конфигураций
+# Файлы конфигураций и моды без ссылок
 
-*Модлист MO2:*
-[modlist.txt](https://disk.yandex.ru/d/Fa-_eZFKUmfK4Q) - "..\GAMMA\profiles\G.A.M.M.A\ **modlist.txt**"
-
-*MCM настройки модов:*
-[axr_options.ltx](https://disk.yandex.ru/d/vYUKozAvDgne7A) - "..\GAMMA\mods\G.A.M.M.A. MCM values - Rename to keep your personal changes\gamedata\configs\ **axr_options.ltx**"
-
-*Настройки игры:*
-[user.ltx](https://disk.yandex.ru/d/IroRasLaT7mDDg) - "..\Anomaly\appdata\ **user.ltx**"
-
+- *Установка моих настроек пользователя*
+	1. Распаковать содержимое папки "**Anomaly**" из архива в вашу папку "**Anomaly**" с заменой файлов
+- *Установка доп. модов + MCM настроек + модлиста MO2*
+	1. Распаковать содержимое папки "**GAMMA**" из архива в вашу папку "**GAMMA**" с заменой файлов
 # Запуск
 
-1. Удалить папку "..\Anomaly\appdata\ **shaders_cache**"
-2. Начать ***НОВУЮ ИГРУ***
+1. Проверить количество активных модов в MO2 - их должно быть ***602***
+2. Удалить папку "..\Anomaly\appdata\ **shaders_cache**"
+3. Начать ***НОВУЮ ИГРУ***

@@ -1,0 +1,169 @@
+-- Unified Time Events Script (Merged KT & ZB)
+local ev_queue = {}
+local computed_ev_queue = {}
+local math_floor = math.floor
+local math_huge = math.huge
+local table_insert = table.insert
+local table_remove = table.remove
+local time_global = time_global
+local pairs = pairs
+local unpack = unpack
+local tg = 0
+
+local function queue_timer_compare(a, b)
+	return a.timer < b.timer -- [Choice: KT] Сортировка по возрастанию (ближайшие события в начале)
+end
+
+local function binary_insert(t, value, fcomp)
+	local fcomp = fcomp or function(a, b) return a < b end
+	local iStart, iEnd, iMid, iState = 1, #t, 1, 0
+	if iEnd == 0 then
+		t[1] = value
+		return 1
+	end
+	if fcomp(value, t[1]) then
+		table_insert(t, 1, value)
+		return 1
+	end
+	if not fcomp(value, t[iEnd]) then
+		local pos = iEnd + 1
+		t[pos] = value
+		return pos
+	end
+	while iStart <= iEnd do
+		iMid = math_floor((iStart + iEnd) / 2)
+		if fcomp(value, t[iMid]) then
+			iEnd, iState = iMid - 1, 0
+		else
+			iStart, iState = iMid + 1, 1
+		end
+	end
+	local pos = iMid + iState
+	table_insert(t, pos, value)
+	return pos
+end
+
+local function refresh_ev_queue()
+	empty_table(computed_ev_queue)
+	local t = computed_ev_queue
+	for ev_id, actions in pairs(ev_queue) do
+		for act_id, act in pairs(actions) do
+			if (act_id ~= "__size") then
+				local d = {
+					ev_id = ev_id,
+					act_id = act_id,
+					timer = act.timer,
+					f = act.f,
+					p = act.p
+				}
+				binary_insert(t, d, queue_timer_compare)
+			end
+		end
+	end
+end
+
+local function find_ev_queue(ev_id, act_id)
+	for i = 1, #computed_ev_queue do
+		local t = computed_ev_queue[i]
+		if t.ev_id == ev_id and t.act_id == act_id then
+			return i
+		end
+	end
+end
+
+local function remove_ev_queue(ev_id, act_id)
+	local pos = find_ev_queue(ev_id, act_id)
+	if pos then return table_remove(computed_ev_queue, pos) end
+end
+
+function CreateTimeEvent(ev_id, act_id, timer, f, ...)
+	if not (ev_queue[ev_id]) then
+		ev_queue[ev_id] = {}
+		ev_queue[ev_id].__size = 0
+	end
+	if not (ev_queue[ev_id][act_id]) then
+		local new_timer = time_global() + timer * 1000
+		ev_queue[ev_id][act_id] = {}
+		ev_queue[ev_id][act_id].timer = new_timer
+		ev_queue[ev_id][act_id].f = f
+		ev_queue[ev_id][act_id].p = { ... }
+		ev_queue[ev_id].__size = ev_queue[ev_id].__size + 1
+		local d = {
+			ev_id = ev_id,
+			act_id = act_id,
+			timer = new_timer,
+			f = f,
+			p = { ... }
+		}
+		binary_insert(computed_ev_queue, d, queue_timer_compare)
+	end
+end
+
+function RemoveTimeEvent(ev_id, act_id)
+	if (ev_queue[ev_id] and ev_queue[ev_id][act_id]) then
+		ev_queue[ev_id][act_id] = nil
+		ev_queue[ev_id].__size = ev_queue[ev_id].__size - 1
+		remove_ev_queue(ev_id, act_id)
+	end
+end
+
+function ResetTimeEvent(ev_id, act_id, timer)
+	if (ev_queue[ev_id] and ev_queue[ev_id][act_id]) then
+		local new_timer = time_global() + timer * 1000
+		ev_queue[ev_id][act_id].timer = new_timer
+		local el = remove_ev_queue(ev_id, act_id)
+		el.timer = new_timer
+		binary_insert(computed_ev_queue, el, queue_timer_compare)
+	end
+end
+
+local to_remove = {}
+function ProcessEventQueue()
+	tg = time_global()
+	local force_refresh
+	
+	-- [Choice: KT] Прямой цикл, так как сортировка по возрастанию
+	for i = 1, #computed_ev_queue do
+		local t = computed_ev_queue[i] or (function()
+			force_refresh = true
+			return { timer = math_huge }
+		end)()
+		
+		if tg < t.timer then
+			break
+		end
+
+		if t.f(unpack(t.p)) == true then
+			local t1 = ev_queue[t.ev_id]
+			if t1 then
+				t1[t.act_id] = nil
+				t1.__size = t1.__size - 1
+				if t1.__size == 0 then
+					ev_queue[t.ev_id] = nil
+				end
+			end
+			to_remove[#to_remove + 1] = {
+				ev_id = t.ev_id,
+				act_id = t.act_id
+			}
+		end
+	end
+
+	if force_refresh then
+		refresh_ev_queue()
+		empty_table(to_remove)
+	elseif to_remove[1] then
+		for i = 1, #to_remove do
+			local t = to_remove[i]
+			remove_ev_queue(t.ev_id, t.act_id)
+			to_remove[i] = nil -- [Choice: ZB] Явное зануление ссылок
+		end
+		empty_table(to_remove)
+	end
+	return false
+end
+
+function on_game_start()
+	-- [Choice: KT] RegisterScriptCallback надежнее для основных игровых циклов
+	RegisterScriptCallback("actor_on_update", ProcessEventQueue) 
+end
